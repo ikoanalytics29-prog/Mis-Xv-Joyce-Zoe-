@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis 15 Años - Joyce Zoe Hernández Espinoza</title>
+    <title>Mis 15 Años - Joyce Zoe Hernández Espinosa</title>
     <!-- Google Fonts para tipografías premium y consistentes en todos los dispositivos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
            1. SISTEMA DE DISEÑO Y VARIABLES
            ========================================================================== */
         :root {
-            --primary: #7FAFD4;       /* Azul Plumingo / Plumbago principal */
+            --primary: #7FAFD4;       /* Azul Plumbago principal */
             --primary-dark: #4A7A9E;  /* Azul oscuro para contraste */
             --bg-light: #F0F5FA;      /* Fondo helado suave */
             --text-dark: #2C3E50;     /* Texto principal legible */
@@ -1040,10 +1040,10 @@
         </div>
     </div>
 
-    <!-- Audio de fondo (Vals de la festejada) -->
+    <!-- Audio de fondo (BTS - Dynamite) -->
     <!-- Se inicia después de la interacción del usuario al abrir el sobre -->
     <audio id="bg-music" loop>
-        <source src="Cancion..mpeg" type="audio/mpeg">
+        <source src="Dynamite.mp3" type="audio/mpeg">
         Tu navegador no soporta el elemento de audio.
     </audio>
 
@@ -1080,9 +1080,9 @@
             
             <!-- TARJETA 1: HERO / PRESENTACIÓN -->
             <section class="card hero-section">
-                <span class="welcome-text">¡Estás Invitado!</span>
+                <span class="welcome-text">Te invito a celebrar mis XV Años</span>
                 <h1 class="main-title">Joyce Zoe</h1>
-                <p class="subtitle">Hernández Espinoza</p>
+                <p class="subtitle">Hernández Espinosa</p>
                 
                 <!-- Moño decorativo izquierdo -->
                 <svg class="frame-bow-left" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1111,9 +1111,13 @@
                 <div class="photo-frame-container">
                     <div class="photo-frame-inner">
                         <!-- Carga la imagen local copiada en la misma carpeta -->
-                        <img src="joyce_15.jpg" alt="Joyce Zoe Hernández Espinoza">
+                        <img src="joyce_15.jpg" alt="Joyce Zoe Hernández Espinosa">
                     </div>
                 </div>
+
+                <p style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--text-dark); margin: 25px auto 15px auto; max-width: 85%; line-height: 1.6;">
+                    Con la bendición de Dios y el amor de mis padres, tengo el honor de invitarte a celebrar mis <strong>quince años</strong>.
+                </p>
 
                 <blockquote class="invitation-quote">
                     "Hay momentos en la vida que son especiales por sí solos, pero compartirlos con las personas que más quieres los hace inolvidables."
@@ -1122,7 +1126,8 @@
 
             <!-- TARJETA 2: CUENTA REGRESIVA -->
             <section class="card">
-                <h2 class="countdown-title">Faltan</h2>
+                <h2 class="countdown-title" style="margin-bottom: 5px;">Día del Evento</h2>
+                <p style="font-family: var(--font-serif); font-size: 1.7rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 25px; letter-spacing: 1px;">Sábado 29 de Agosto de 2026</p>
                 <div class="countdown-grid">
                     <div class="countdown-box">
                         <div class="countdown-number" id="days">00</div>
@@ -1227,7 +1232,7 @@
                         <div class="color-swatch"></div>
                         <div class="prohibition-slash"></div>
                     </div>
-                    <span class="forbidden-label">Prohibido color Azul Plumingo</span>
+                    <span class="forbidden-label">Prohibido color Azul Plumbago</span>
                     <span class="forbidden-explanation">Color reservado exclusivamente para la quinceañera</span>
                 </div>
             </section>
@@ -1415,7 +1420,7 @@
                 this.opacity = Math.random() * 0.4 + 0.4; // Opacidad del pétalo
                 this.rotation = Math.random() * 360;
                 this.spinSpeed = Math.random() * 1 - 0.5; // Velocidad de rotación
-                // Usamos HSL para dar variaciones tonales sutiles dentro de la gama de azul plumingo
+                // Usamos HSL para dar variaciones tonales sutiles dentro de la gama de azul plumbago
                 this.colorHue = Math.random() * 15 + 195; // Tonos entre 195 y 210 de HSL (azules celestes)
                 this.saturation = Math.random() * 15 + 50; // De 50% a 65% de saturación
                 this.lightness = Math.random() * 10 + 65; // De 65% a 75% de luminosidad
