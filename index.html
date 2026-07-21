@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis 15 Años - Joyce Zoe Hernández Espinosa</title>
+    <!-- Google Fonts para tipografías premium y consistentes en todos los dispositivos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. SISTEMA DE DISEÑO Y VARIABLES
+           ========================================================================== */
+        :root {
+            --primary: #7FAFD4;       /* Azul Plumbago principal */
+            --primary-dark: #4A7A9E;  /* Azul oscuro para contraste */
+            --bg-light: #F0F5FA;      /* Fondo helado suave */
+            --text-dark: #2C3E50;     /* Texto principal legible */
+            --text-muted: #7F8C8D;    /* Texto secundario */
+            --accent-silver: #D1D8E0; /* Acento plateado */
+            --gold: #D4AF37;          /* Acento dorado sutil para detalles */
+            --forbidden-red: #E74C3C; /* Rojo de prohibición */
+            --font-cursive: 'Great Vibes', cursive;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --shadow-soft: 0 10px 30px rgba(0,0,0,0.05);
+            --shadow-medium: 0 15px 35px rgba(74, 122, 158, 0.15);
+        }
+
+        /* Reset general */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: var(--font-sans);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Ocultar scrollbar durante la pantalla del sobre */
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        /* ==========================================================================
+           2. PANTALLA DE CARGA Y SOBRE INTERACTIVO (Intro)
+           ========================================================================== */
+        #envelope-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #e3edf7 0%, #cbdde6 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s cubic-bezier(0.85, 0, 0.15, 1), visibility 1s;
+        }
+
+        #envelope-wrapper.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .envelope-container {
+            position: relative;
+            width: 90%;
+            max-width: 450px;
+            height: 320px;
+            cursor: pointer;
+            perspective: 1000px;
+            transition: transform 0.5s ease;
+        }
+
+        .envelope-container:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), 0 15px 25px rgba(0, 0, 0, 0.08);
+            transform-style: preserve-3d;
+        }
+
+        /* Solapas del sobre */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 160px 225px 160px 0;
+            border-color: transparent #f4f7f9 transparent transparent;
+            z-index: 3;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .envelope::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 160px 0 160px 225px;
+            border-color: transparent transparent transparent #f4f7f9;
+            z-index: 3;
+            border-radius: 8px 0 0 8px;
+        }
+
+        /* Solapa inferior */
+        .envelope-bottom {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 0;
+            border-style: solid;
+            border-width: 0 225px 160px 225px;
+            border-color: transparent transparent #eaf0f4 transparent;
+            z-index: 4;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Solapa superior (abrible) */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 0;
+            border-style: solid;
+            border-width: 160px 225px 0 225px;
+            border-color: #dae5ed transparent transparent transparent;
+            z-index: 5;
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Cuando se abre el sobre */
+        .envelope-container.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+            border-color: #cbdbe5 transparent transparent transparent;
+        }
+
+        /* Tarjeta interna que emerge */
+        .envelope-card {
+            position: absolute;
+            top: 10px;
+            left: 5%;
+            width: 90%;
+            height: 90%;
+            background: linear-gradient(135deg, #ffffff 0%, #f7f9fb 100%);
+            border-radius: 6px;
+            z-index: 2;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid rgba(127, 175, 212, 0.2);
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: translateY(0);
+        }
+
+        .envelope-container.open .envelope-card {
+            transform: translateY(-130px) scale(1.05);
+            z-index: 6;
+        }
+
+        .envelope-card h3 {
+            font-family: var(--font-cursive);
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .envelope-card p {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* Botón para abrir */
+        .open-btn {
+            background-color: var(--primary-dark);
+            color: #ffffff;
+            border: none;
+            padding: 10px 24px;
+            font-size: 0.85rem;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            letter-spacing: 1px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(74, 122, 158, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .open-btn:hover {
+            background-color: var(--primary);
+            box-shadow: 0 6px 20px rgba(127, 175, 212, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* Sello de cera digital */
+        .wax-seal {
+            position: absolute;
+            top: 130px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, #5b8eb9 0%, #406f94 100%);
+            border-radius: 50%;
+            z-index: 7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25), inset 0 2px 5px rgba(255,255,255,0.2);
+            transition: all 0.5s ease-in-out;
+            border: 2px solid rgba(255,255,255,0.15);
+        }
+
+        .wax-seal::after {
+            content: 'JZ';
+            font-family: var(--font-cursive);
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            letter-spacing: -1px;
+        }
+
+        .envelope-container.open .wax-seal {
+            transform: translateX(-50%) translateY(80px) rotate(45deg) scale(0);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Indicación de clic */
+        .tap-instruction {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: pulse-text 2s infinite;
+        }
+
+        @keyframes pulse-text {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Ajustes para móviles en el sobre */
+        @media (max-width: 480px) {
+            .envelope-container {
+                height: 260px;
+            }
+            .envelope::before, .envelope::after {
+                border-width: 130px 190px 130px 0;
+            }
+            .envelope::after {
+                border-width: 130px 0 130px 190px;
+            }
+            .envelope-bottom {
+                border-width: 0 190px 130px 190px;
+            }
+            .envelope-flap {
+                border-width: 130px 190px 0 190px;
+            }
+            .wax-seal {
+                top: 100px;
+                width: 60px;
+                height: 60px;
+            }
+            .wax-seal::after {
+                font-size: 1.5rem;
+            }
+            .envelope-container.open .envelope-card {
+                transform: translateY(-100px) scale(1.05);
+            }
+        }
+
+        /* ==========================================================================
+           3. DISEÑO DE LA INVITACIÓN PRINCIPAL
+           ========================================================================== */
+        #main-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #F0F5FA 0%, #FFFFFF 15%, #E3EDF7 50%, #FFFFFF 85%, #F0F5FA 100%);
+        }
+
+        #main-content.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Canvas de pétalos cayendo */
+        #petal-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .scroll-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 20px 15px 80px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        /* ==========================================================================
+           COMPONENTES Y TARJETAS (Glassmorphism)
+           ========================================================================== */
+        .card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Elementos decorativos de esquinas */
+        .card::before, .card::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid rgba(74, 122, 158, 0.2);
+            pointer-events: none;
+        }
+        .card::before {
+            top: 15px;
+            left: 15px;
+            border-right: none;
+            border-bottom: none;
+        }
+        .card::after {
+            bottom: 15px;
+            right: 15px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* ==========================================================================
+           SECCIÓN HERO (Presentación de Joyce)
+           ========================================================================== */
+        .hero-section {
+            padding-top: 50px;
+        }
+
+        .welcome-text {
+            font-size: 0.95rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--primary-dark);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .main-title {
+            font-family: var(--font-cursive);
+            font-size: 4.5rem;
+            color: var(--primary-dark);
+            line-height: 1.1;
+            margin-bottom: 10px;
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .subtitle {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            font-style: italic;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+        }
+
+        /* Marco de la foto de Joyce */
+        .photo-frame-container {
+            position: relative;
+            width: 250px;
+            height: 380px;
+            margin: 30px auto;
+            border-radius: 125px; /* Marco ovalado de lujo */
+            padding: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-silver) 50%, var(--gold) 100%);
+            box-shadow: 0 20px 45px rgba(74, 122, 158, 0.25);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .photo-frame-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 120px;
+            overflow: hidden;
+            background-color: #ffffff;
+            position: relative;
+        }
+
+        .photo-frame-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .photo-frame-container:hover img {
+            transform: scale(1.06);
+        }
+
+        /* Moños decorativos en esquinas */
+        .frame-bow-left, .frame-bow-right {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            z-index: 10;
+        }
+        .frame-bow-left {
+            top: -10px;
+            left: -10px;
+            transform: rotate(-15deg);
+        }
+        .frame-bow-right {
+            top: -10px;
+            right: -10px;
+            transform: rotate(15deg);
+        }
+
+        .invitation-quote {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            max-width: 80%;
+            margin: 20px auto 0 auto;
+            font-style: italic;
+        }
+
+        /* ==========================================================================
+           SECCIÓN CUENTA REGRESIVA
+           ========================================================================== */
+        .countdown-title {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary-dark);
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .countdown-box {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(127, 175, 212, 0.25);
+            border-radius: 15px;
+            padding: 15px 5px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .countdown-box:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .countdown-number {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .countdown-label {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           SECCIÓN PADRES Y PADRINOS
+           ========================================================================== */
+        .family-section h3 {
+            font-family: var(--font-cursive);
+            font-size: 2.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .family-intro {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .family-names-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .family-member {
+            border-bottom: 1px solid rgba(127, 175, 212, 0.15);
+            padding-bottom: 15px;
+        }
+
+        .family-member:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .family-role {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary-dark);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .family-name {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        /* ==========================================================================
+           SECCIÓN DE EVENTOS (Ubicaciones)
+           ========================================================================== */
+        .events-title {
+            font-family: var(--font-cursive);
+            font-size: 3rem;
+            color: var(--primary-dark);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .event-card {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(127, 175, 212, 0.2);
+            border-radius: 18px;
+            padding: 30px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 30px rgba(74, 122, 158, 0.12);
+        }
+
+        .event-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .event-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #f0f5fa;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-dark);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.03);
+            border: 1px solid rgba(127, 175, 212, 0.15);
+        }
+
+        .event-type {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            letter-spacing: 1px;
+        }
+
+        .event-details {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-dark);
+            max-width: 90%;
+        }
+
+        .event-details strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .event-time {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            background-color: #f0f5fa;
+            padding: 6px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(127, 175, 212, 0.15);
+            margin-top: 5px;
+        }
+
+        /* Botón de mapas */
+        .map-btn {
+            background-color: transparent;
+            color: var(--primary-dark);
+            border: 1.5px solid var(--primary-dark);
+            padding: 10px 24px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 25px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            text-decoration: none;
+        }
+
+        .map-btn:hover {
+            background-color: var(--primary-dark);
+            color: #ffffff;
+            box-shadow: 0 5px 15px rgba(74, 122, 158, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* ==========================================================================
+           CÓDIGO DE VESTIMENTA (Restricción de Color)
+           ========================================================================== */
+        .dress-title {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .dress-code-type {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .dress-instruction {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 85%;
+            margin: 0 auto 25px auto;
+        }
+
+        /* Contenedor del color prohibido */
+        .forbidden-color-container {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .color-swatch-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 12px;
+        }
+
+        /* Círculo con el color de la quinceañera */
+        .color-swatch {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7FAFD4 0%, #a2c8e6 50%, #7FAFD4 100%);
+            box-shadow: 0 8px 20px rgba(127, 175, 212, 0.4), inset 0 4px 10px rgba(255,255,255,0.4);
+            border: 3px solid #ffffff;
+            transition: transform 0.4s ease;
+        }
+
+        /* Símbolo de Prohibido */
+        .prohibition-slash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid var(--forbidden-red);
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.25);
+        }
+
+        .prohibition-slash::after {
+            content: '';
+            position: absolute;
+            width: 110%;
+            height: 6px;
+            background-color: var(--forbidden-red);
+            transform: rotate(-45deg);
+        }
+
+        .forbidden-color-container:hover .color-swatch {
+            transform: scale(1.05);
+        }
+
+        .forbidden-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--forbidden-red);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .forbidden-explanation {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* ==========================================================================
+           FORMULARIO RSVP Y WHATSAPP
+           ========================================================================== */
+        .rsvp-title {
+            font-family: var(--font-cursive);
+            font-size: 3rem;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .rsvp-subtitle {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .rsvp-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid rgba(127, 175, 212, 0.3);
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary-dark);
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(74, 122, 158, 0.1), inset 0 2px 4px rgba(0,0,0,0.01);
+        }
+
+        .whatsapp-btn {
+            background-color: #25D366; /* Color de WhatsApp */
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #1ebd59;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           AGRADECIMIENTO FINAL
+           ========================================================================== */
+        .thank-you-text {
+            font-family: var(--font-cursive);
+            font-size: 3.5rem;
+            color: var(--primary-dark);
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .thank-you-subtext {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            color: var(--text-dark);
+            font-style: italic;
+        }
+
+        /* ==========================================================================
+           4. REPRODUCTOR DE MÚSICA FLOTANTE Y CONTROLES
+           ========================================================================== */
+        .music-player-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .music-player-container * {
+            pointer-events: auto;
+        }
+
+        /* Botón de Play/Pause */
+        .music-toggle-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 1px solid rgba(127, 175, 212, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: var(--primary-dark);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .music-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(74, 122, 158, 0.2);
+            color: var(--primary);
+        }
+
+        /* Icono de vinilo girando cuando se reproduce */
+        .music-toggle-btn.playing {
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Animación del ecualizador visual */
+        .visualizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 8px 12px;
+            border-radius: 15px;
+            border: 1px solid rgba(127, 175, 212, 0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.5s ease;
+        }
+
+        .visualizer.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .bar {
+            width: 3px;
+            height: 5px;
+            background-color: var(--primary-dark);
+            border-radius: 1px;
+            transition: height 0.1s ease;
+        }
+
+        /* Alturas dinámicas animadas por CSS */
+        .music-toggle-btn.playing + .visualizer .bar:nth-child(1) { animation: bounce 0.8s ease-in-out infinite alternate; }
+        .music-toggle-btn.playing + .visualizer .bar:nth-child(2) { animation: bounce 0.5s ease-in-out infinite alternate 0.1s; }
+        .music-toggle-btn.playing + .visualizer .bar:nth-child(3) { animation: bounce 0.9s ease-in-out infinite alternate 0.2s; }
+        .music-toggle-btn.playing + .visualizer .bar:nth-child(4) { animation: bounce 0.6s ease-in-out infinite alternate 0.3s; }
+
+        @keyframes bounce {
+            0% { height: 4px; }
+            100% { height: 20px; }
+        }
+
+        /* Ocultar barra al pausar */
+        .music-toggle-btn:not(.playing) + .visualizer .bar {
+            height: 3px !important;
+            animation: none !important;
+        }
+    </style>
+</head>
+<body class="no-scroll">
+
+    <!-- ==========================================================================
+       1. PANTALLA DE APERTURA: SOBRE VIRTUAL
+       ========================================================================== -->
+    <div id="envelope-wrapper">
+        <div class="envelope-container" id="interactive-envelope" onclick="openEnvelope()">
+            <div class="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-card">
+                    <h3>Joyce Zoe</h3>
+                    <p>Mis 15 Años</p>
+                    <button class="open-btn">Abrir Invitación</button>
+                </div>
+                <div class="envelope-bottom"></div>
+                <div class="wax-seal"></div>
+            </div>
+            <div class="tap-instruction">Toca para abrir</div>
+        </div>
+    </div>
+
+    <!-- Audio de fondo (BTS - Dynamite) -->
+    <!-- Se inicia después de la interacción del usuario al abrir el sobre -->
+    <audio id="bg-music" loop>
+        <source src="Dynamite.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- ==========================================================================
+       2. REPRODUCTOR DE MÚSICA FLOTANTE
+       ========================================================================== -->
+    <div class="music-player-container">
+        <!-- Botón de control de música -->
+        <div class="music-toggle-btn" id="music-btn" onclick="toggleMusic()">
+            <!-- SVG de Notas Musicales / Parlante -->
+            <svg id="music-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+        </div>
+        <!-- Indicador de ecualizador visual -->
+        <div class="visualizer" id="music-visualizer">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       3. CONTENIDO DE LA INVITACIÓN PRINCIPAL
+       ========================================================================== -->
+    <div id="main-content">
+        <!-- Canvas para la animación de pétalos flotantes -->
+        <canvas id="petal-canvas"></canvas>
+
+        <div class="scroll-container">
+            
+            <!-- TARJETA 1: HERO / PRESENTACIÓN -->
+            <section class="card hero-section">
+                <span class="welcome-text">Te invito a celebrar mis XV Años</span>
+                <h1 class="main-title">Joyce Zoe</h1>
+                <p class="subtitle">Hernández Espinosa</p>
+                
+                <!-- Moño decorativo izquierdo -->
+                <svg class="frame-bow-left" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Representación vectorial estilizada de moño azul plumingo con perlas -->
+                    <path d="M50 50 C20 10, 10 40, 50 50 C90 40, 80 10, 50 50 Z" fill="#7FAFD4" stroke="#ffffff" stroke-width="2"/>
+                    <path d="M50 50 C30 90, 45 90, 50 50 C55 90, 70 90, 50 50 Z" fill="#7FAFD4" stroke="#ffffff" stroke-width="1.5"/>
+                    <circle cx="50" cy="50" r="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+                    <circle cx="50" cy="44" r="3" fill="#FFFFFF"/>
+                    <circle cx="50" cy="56" r="3" fill="#FFFFFF"/>
+                    <circle cx="44" cy="50" r="3" fill="#FFFFFF"/>
+                    <circle cx="56" cy="50" r="3" fill="#FFFFFF"/>
+                </svg>
+
+                <!-- Moño decorativo derecho -->
+                <svg class="frame-bow-right" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 50 C20 10, 10 40, 50 50 C90 40, 80 10, 50 50 Z" fill="#7FAFD4" stroke="#ffffff" stroke-width="2"/>
+                    <path d="M50 50 C30 90, 45 90, 50 50 C55 90, 70 90, 50 50 Z" fill="#7FAFD4" stroke="#ffffff" stroke-width="1.5"/>
+                    <circle cx="50" cy="50" r="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+                    <circle cx="50" cy="44" r="3" fill="#FFFFFF"/>
+                    <circle cx="50" cy="56" r="3" fill="#FFFFFF"/>
+                    <circle cx="44" cy="50" r="3" fill="#FFFFFF"/>
+                    <circle cx="56" cy="50" r="3" fill="#FFFFFF"/>
+                </svg>
+
+                <!-- Foto enmarcada en óvalo de gala -->
+                <div class="photo-frame-container">
+                    <div class="photo-frame-inner">
+                        <!-- Carga la imagen local copiada en la misma carpeta -->
+                        <img src="joyce_15.jpg" alt="Joyce Zoe Hernández Espinosa">
+                    </div>
+                </div>
+
+                <p style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--text-dark); margin: 25px auto 15px auto; max-width: 85%; line-height: 1.6;">
+                    Con la bendición de Dios y el amor de mis padres, tengo el honor de invitarte a celebrar mis <strong>quince años</strong>.
+                </p>
+
+                <blockquote class="invitation-quote">
+                    "Hay momentos en la vida que son especiales por sí solos, pero compartirlos con las personas que más quieres los hace inolvidables."
+                </blockquote>
+            </section>
+
+            <!-- TARJETA 2: CUENTA REGRESIVA -->
+            <section class="card">
+                <h2 class="countdown-title" style="margin-bottom: 5px;">Día del Evento</h2>
+                <p style="font-family: var(--font-serif); font-size: 1.7rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 25px; letter-spacing: 1px;">Sábado 29 de Agosto de 2026</p>
+                <div class="countdown-grid">
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="days">00</div>
+                        <div class="countdown-label">Días</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="hours">00</div>
+                        <div class="countdown-label">Horas</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="minutes">00</div>
+                        <div class="countdown-label">Min</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="seconds">00</div>
+                        <div class="countdown-label">Seg</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TARJETA 3: PADRES Y PADRINOS -->
+            <section class="card family-section">
+                <h3>Con la bendición de</h3>
+                <p class="family-intro">Mis Padres y Padrinos</p>
+                <div class="family-names-grid">
+                    <div class="family-member">
+                        <div class="family-role">Padre</div>
+                        <div class="family-name">Roberto Jesús Hernández Vera</div>
+                    </div>
+                    <div class="family-member">
+                        <div class="family-role">Madrina</div>
+                        <div class="family-name">Oliva Ávila Ivañez</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TARJETA 4: UBICACIONES Y HORARIOS (Misa & Salón) -->
+            <section class="card">
+                <h2 class="events-title">¿Dónde y Cuándo?</h2>
+                
+                <!-- Tarjeta de Misa -->
+                <div class="event-card">
+                    <div class="event-icon">
+                        <!-- Icono SVG de Iglesia -->
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v20M17 5H7M12 9h5M12 13H7"></path>
+                            <path d="M3 22h18"></path>
+                        </svg>
+                    </div>
+                    <div class="event-type">Ceremonia Religiosa</div>
+                    <div class="event-details">
+                        <strong>Iglesia Cristo Rey</strong>
+                        Imprenta 385, Janitzio, Venustiano Carranza, 15200 Ciudad de México, CDMX
+                    </div>
+                    <div class="event-time">07:00 PM</div>
+                    <!-- Enlace directo de mapas a la iglesia -->
+                    <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+Cristo+Rey+Imprenta+385+Janitzio+Venustiano+Carranza+15200+Ciudad+de+Mexico" target="_blank" class="map-btn">
+                        <!-- Icono Map-pin SVG -->
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        Ver en Google Maps
+                    </a>
+                </div>
+
+                <!-- Tarjeta de Recepción -->
+                <div class="event-card">
+                    <div class="event-icon">
+                        <!-- Icono SVG de Copa / Fiesta -->
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22V12m0 0a5 5 0 0 0 5-5V3H7v4a5 5 0 0 0 5 5z"></path>
+                            <path d="M6 3h12M9 7h6"></path>
+                        </svg>
+                    </div>
+                    <div class="event-type">Recepción</div>
+                    <div class="event-details">
+                        <strong>Salón de Eventos DUBAI</strong>
+                        El 14 38, Popular Rastro, Venustiano Carranza, 15220 Ciudad de México, CDMX
+                    </div>
+                    <div class="event-time">08:00 PM</div>
+                    <!-- Enlace directo de mapas al salón -->
+                    <a href="https://www.google.com/maps/search/?api=1&query=Salón+DUBAI+El+14+38+Popular+Rastro+Venustiano+Carranza+15220+Ciudad+de+Mexico" target="_blank" class="map-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        Ver en Google Maps
+                    </a>
+                </div>
+            </section>
+
+            <!-- TARJETA 5: CÓDIGO DE VESTIMENTA -->
+            <section class="card">
+                <h2 class="dress-title">Código de Vestimenta</h2>
+                <div class="dress-code-type">Formal / Gala</div>
+                <p class="dress-instruction">Agradecemos su asistencia portando etiqueta formal para esta noche tan mágica y especial.</p>
+                
+                <!-- Indicador visual del color prohibido -->
+                <div class="forbidden-color-container">
+                    <div class="color-swatch-wrapper">
+                        <div class="color-swatch"></div>
+                        <div class="prohibition-slash"></div>
+                    </div>
+                    <span class="forbidden-label">Prohibido color Azul Plumbago</span>
+                    <span class="forbidden-explanation">Color reservado exclusivamente para la quinceañera</span>
+                </div>
+            </section>
+
+            <!-- TARJETA 6: RSVP / CONFIRMACIÓN DE ASISTENCIA -->
+            <section class="card">
+                <h2 class="rsvp-title">R.S.V.P.</h2>
+                <p class="rsvp-subtitle">Confirmación de Asistencia</p>
+                <form class="rsvp-form" id="rsvp-form" onsubmit="sendRSVP(event)">
+                    <div class="form-group">
+                        <label for="guest-name">Nombre Completo</label>
+                        <input type="text" id="guest-name" placeholder="Ej. Familia Hernández García" required>
+                    </div>
+
+                    <button type="submit" class="whatsapp-btn">
+                        <!-- Icono SVG de WhatsApp -->
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 2.51 1.489 4.415 1.49 5.33.002 9.67-4.33 9.673-9.66.002-2.584-1.002-5.01-2.826-6.837C16.084 2.32 13.66 1.317 11.08 1.315c-5.328 0-9.67 4.33-9.673 9.663-.001 1.91.536 2.91 1.503 4.542l-.997 3.642 3.743-.982zM17.472 14.382c-.32-.16-1.89-.93-2.185-1.041-.297-.108-.512-.16-.73.162-.216.32-.838 1.058-1.026 1.272-.19.213-.377.24-.696.08-3.235-1.616-5.424-2.908-7.594-6.606-.318-.542.317-.504.91-1.692.1-.2.05-.37-.025-.53-.075-.16-.69-1.66-.945-2.275-.248-.598-.5-.516-.69-.526-.178-.008-.383-.01-.588-.01-.205 0-.538.078-.82.388-.28.308-1.072 1.05-1.072 2.56 0 1.512 1.1 2.973 1.25 3.177.153.204 2.164 3.303 5.244 4.63.732.316 1.302.505 1.743.646.735.234 1.4.202 1.93.123.59-.088 1.89-.773 2.154-1.48.265-.708.265-1.312.188-1.438-.08-.124-.294-.2-.613-.362z"/>
+                        </svg>
+                        Confirmar por WhatsApp
+                    </button>
+                </form>
+            </section>
+
+            <!-- SECCIÓN FINAL -->
+            <section class="card" style="margin-top: 20px;">
+                <h3 class="thank-you-text">¡Te Espero!</h3>
+                <p class="thank-you-subtext">Tu presencia es mi mejor regalo</p>
+            </section>
+
+            <!-- FOOTER CRÉDITOS -->
+            <footer style="margin-top: 10px; margin-bottom: 10px; font-size: 0.75rem; color: var(--text-muted); text-align: center; letter-spacing: 1px; line-height: 1.6; z-index: 10; position: relative; width: 100%;">
+                <p>Diseño e Invitaciones Digitales por <strong>IkoAnalytics</strong></p>
+                <p style="margin-top: 4px;">Contrataciones y Presupuestos: <a href="https://api.whatsapp.com/send?phone=525525186539&text=Hola!%20Me%20gustar%C3%ADa%20solicitar%20un%20presupuesto%20para%20una%20invitaci%C3%B3n%20digital." target="_blank" style="color: var(--primary-dark); text-decoration: none; font-weight: 600;">55 2518 6539</a></p>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       SCRIPT DE LÓGICA E INTERACTIVIDAD
+       ========================================================================== -->
+    <script>
+        // ==========================================================================
+        // Configuración General
+        // ==========================================================================
+        // NÚMERO DE TELÉFONO DE WHATSAPP (Formato Internacional, sin signo +)
+        // Teléfono de confirmación de Joyce Zoe: 55 8702 5136
+        const WHATSAPP_PHONE = "525587025136"; 	
+
+        // Fecha del evento: 29 de Agosto del 2026, 7:00 PM
+        const EVENT_DATE = new Date("August 29, 2026 19:00:00").getTime();
+
+        // ==========================================================================
+        // Apertura del Sobre Virtual
+        // ==========================================================================
+        function openEnvelope() {
+            const envelope = document.getElementById('interactive-envelope');
+            const wrapper = document.getElementById('envelope-wrapper');
+            const mainContent = document.getElementById('main-content');
+            const audio = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('music-btn');
+            const visualizer = document.getElementById('music-visualizer');
+
+            // 1. Agregar clase de abierto para iniciar animaciones CSS
+            envelope.classList.add('open');
+
+            // 2. Intentar reproducir música automáticamente al abrir (permitido gracias a la interacción del click)
+            setTimeout(() => {
+                audio.play().then(() => {
+                    musicBtn.classList.add('playing');
+                    visualizer.classList.add('visible');
+                }).catch(error => {
+                    console.log("Autoplay bloqueado o archivo de música inaccesible inicialmente:", error);
+                });
+            }, 500);
+
+            // 3. Desvanecer pantalla de sobre e iniciar la visualización de la invitación
+            setTimeout(() => {
+                wrapper.classList.add('hidden');
+                document.body.classList.remove('no-scroll');
+                mainContent.classList.add('visible');
+                
+                // Redimensionar el canvas de pétalos una vez mostrado el contenedor
+                resizeCanvas();
+                // Iniciar la animación de los pétalos
+                initPetals();
+            }, 1500);
+        }
+
+        // ==========================================================================
+        // Cuenta Regresiva (Countdown)
+        // ==========================================================================
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = EVENT_DATE - now;
+
+            // Cálculos matemáticos de tiempo
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Mostrar el resultado en los contenedores correspondientes
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
+            } else {
+                document.getElementById("days").innerText = String(days).padStart(2, '0');
+                document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+            }
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Ejecución inmediata al cargar
+
+        // ==========================================================================
+        // Reproductor de Música (Play / Pause)
+        // ==========================================================================
+        function toggleMusic() {
+            const audio = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('music-btn');
+            const visualizer = document.getElementById('music-visualizer');
+
+            if (audio.paused) {
+                audio.play();
+                musicBtn.classList.add('playing');
+                visualizer.classList.add('visible');
+            } else {
+                audio.pause();
+                musicBtn.classList.remove('playing');
+            }
+        }
+
+        // Confirmación RSVP a través de WhatsApp
+        // ==========================================================================
+        function sendRSVP(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('guest-name').value.trim();
+
+            // Redactar mensaje personalizado (sin pases)
+            const message = `¡Hola Joyce Zoe! 🌸\nConfirmo con mucha alegría mi asistencia a tu fiesta de 15 años.\n\n👤 *Confirmado por:* ${name}\n\n¡Nos vemos pronto para festejar contigo! ✨`;
+            
+            // Codificar el texto para la URL de WhatsApp
+            const encodedMessage = encodeURIComponent(message);
+            
+            // URL de API de WhatsApp
+            const whatsappURL = `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodedMessage}`;
+            
+            // Abrir en una pestaña nueva
+            window.open(whatsappURL, '_blank');
+        }
+
+        // ==========================================================================
+        // Animación de Pétalos de Rosas Azules (Canvas 2D)
+        // ==========================================================================
+        const canvas = document.getElementById('petal-canvas');
+        const ctx = canvas.getContext('2d');
+        let petalsArray = [];
+        const maxPetals = 25; // Cantidad de pétalos simultáneos en pantalla para rendimiento fluido
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+        });
+
+        // Clase del pétalo individual
+        class Petal {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -canvas.height - 20;
+                this.size = Math.random() * 8 + 6; // Tamaño del pétalo
+                this.speedY = Math.random() * 1.2 + 0.6; // Velocidad de caída
+                this.speedX = Math.random() * 1 - 0.5; // Oscilación lateral
+                this.opacity = Math.random() * 0.4 + 0.4; // Opacidad del pétalo
+                this.rotation = Math.random() * 360;
+                this.spinSpeed = Math.random() * 1 - 0.5; // Velocidad de rotación
+                // Usamos HSL para dar variaciones tonales sutiles dentro de la gama de azul plumbago
+                this.colorHue = Math.random() * 15 + 195; // Tonos entre 195 y 210 de HSL (azules celestes)
+                this.saturation = Math.random() * 15 + 50; // De 50% a 65% de saturación
+                this.lightness = Math.random() * 10 + 65; // De 65% a 75% de luminosidad
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.spinSpeed;
+
+                // Si sale de los límites de la pantalla, reiniciar arriba
+                if (this.y > canvas.height + 20) {
+                    this.y = -20;
+                    this.x = Math.random() * canvas.width;
+                    this.speedY = Math.random() * 1.2 + 0.6;
+                    this.speedX = Math.random() * 1 - 0.5;
+                    this.opacity = Math.random() * 0.4 + 0.4;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.beginPath();
+                
+                // Dibujar silueta estilizada de un pétalo de rosa curvo
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-this.size, -this.size / 2, -this.size, this.size, 0, this.size * 1.3);
+                ctx.bezierCurveTo(this.size, this.size, this.size, -this.size / 2, 0, 0);
+                
+                ctx.fillStyle = `hsla(${this.colorHue}, ${this.saturation}%, ${this.lightness}%, ${this.opacity})`;
+                ctx.fill();
+                
+                // Detalle sutil de relieve blanco para realismo
+                ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity * 0.3})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                ctx.restore();
+            }
+        }
+
+        // Inicializar array de pétalos
+        function initPetals() {
+            petalsArray = [];
+            for (let i = 0; i < maxPetals; i++) {
+                petalsArray.push(new Petal());
+            }
+            animatePetals();
+        }
+
+        // Bucle de animación
+        function animatePetals() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < petalsArray.length; i++) {
+                petalsArray[i].update();
+                petalsArray[i].draw();
+            }
+            
+            requestAnimationFrame(animatePetals);
+        }
+    </script>
+</body>
+</html>
